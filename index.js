@@ -20,24 +20,38 @@ app.get('/', (req, res) => {
     return res.sendFile("index.html", options);
 });
 
-io.on('connection', (socket)=>{
+let users = 0;
+
+io.on('connection', (socket) => {
     console.log(`a user connected`);
 
-    setTimeout(()=>{
-        // socket.send("Sent message from server side by prereserved events.");
-        socket.emit('myCustomEvent', {
-            message: "this is my custom event message from server side"
+    users++;
+    // io.sockets.emit('broadcast', { message: `Connected Users: ${users}` });
+    socket.emit('newUserConnect', {message: 'Hii, user new user'});
+    socket.broadcast.emit('newUserConnect', {message: `Connected Users: ${users}`});
+
+    /*
+        setTimeout(()=>{
+            // socket.send("Sent message from server side by prereserved events.");
+            socket.emit('myCustomEvent', {
+                message: "this is my custom event message from server side"
+            });
+        }, 3000);
+    
+        socket.on('myCustomEventFromClient', ({message})=>{
+            console.log(message);
+            
         });
-    }, 3000);
+    */
 
-    socket.on('myCustomEventFromClient', ({message})=>{
-        console.log(message);
-        
-    });
-
-    socket.on('disconnect', ()=>{
+    socket.on('disconnect', () => {
         console.log(`a user disconnected`);
-        
+
+        users--;
+        // io.sockets.emit('broadcast', { message: `Connected Users: ${users}` });
+        socket.emit('newUserConnect', {message: 'Hii, user new user'});
+        socket.broadcast.emit('newUserConnect', {message: `Connected Users: ${users}`});
+
     });
 });
 

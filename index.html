@@ -14,13 +14,20 @@
     <script>
         const socket = io();
 
-        socket.on('myCustomEvent', ({ message }) => {
+        socket.on('newUserConnect', ({ message }) => {
+            document.body.innerHTML = '';
             document.write(message);
+            document.body.style.backgroundColor = '#A9A9A9';
         });
-
-        socket.emit('myCustomEventFromClient', {
-            message: "a custom message from client side"
-        });
+        /*
+                socket.on('myCustomEvent', ({ message }) => {
+                    document.write(message);
+                });
+        
+                socket.emit('myCustomEventFromClient', {
+                    message: "a custom message from client side"
+                });
+        */
     </script>
 </body>
 
