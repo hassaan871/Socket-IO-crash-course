@@ -13,6 +13,14 @@
     <p>Hello World</p>
     <script>
         const socket = io();
+
+        socket.on('myCustomEvent', ({ message }) => {
+            document.write(message);
+        });
+
+        socket.emit('myCustomEventFromClient', {
+            message: "a custom message from client side"
+        });
     </script>
 </body>
 
